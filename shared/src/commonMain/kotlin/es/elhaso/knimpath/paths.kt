@@ -1,5 +1,6 @@
 package es.elhaso.knimpath
 
+import knim.std.internal.splitFile
 import kotlin.jvm.JvmInline
 
 @JvmInline
@@ -24,3 +25,9 @@ data class PathResult(
     val name: Path,
     val ext: String,
 )
+
+
+fun splitFile(path: Path): PathResult {
+    val result = splitFile(path.value)
+    return PathResult(Path(result.dir), Path(result.name), result.ext)
+}

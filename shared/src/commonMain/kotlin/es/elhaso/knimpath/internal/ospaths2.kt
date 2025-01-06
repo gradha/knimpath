@@ -30,23 +30,24 @@ data class PathResultIntern(
 fun splitFile(path: String): PathResultIntern {
     var namePos = 0
     var dotPos = 0
-    var stop = if (doslikeFileSystem) 0 else 0
+    val stop = if (doslikeFileSystem) 0 else 0
     var resultDir: CharSequence = ""
     var resultName: CharSequence = ""
     var resultExt: CharSequence = ""
 
-    for (i in path.length downTo stop) {
+    for (i in (path.length - 1) downTo stop) {
         if (path[i] in DirSepAltSep || i == 0) {
             if (path[i] in DirSepAltSep) {
-                resultDir = path.subSequence(0, if (i >= 1) i - 1 else 0)
+                resultDir = path.subSequence(0, if (i < 1) 1 else i)
                 namePos = i + 1
             }
             if (dotPos > i) {
-                resultName = path.subSequence(namePos, dotPos - 1)
+                resultName = path.subSequence(namePos, dotPos)
                 resultExt = path.subSequence(dotPos, path.length)
             } else {
-                resultName = path.subSequence(namePos, path.length)
+                resultName = path.subSequence(namePos, path.length )
             }
+            break
         } else if (path[i] == ExtSep && i > 0 && i < path.length - 1 &&
             path[i - 1] !in DirSepAltSep &&
             path[i + 1] != ExtSep && dotPos == 0
