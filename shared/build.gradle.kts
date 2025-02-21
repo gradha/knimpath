@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    id("maven-publish")
 }
 
 kotlin {
@@ -15,7 +16,8 @@ kotlin {
             }
         }
     }
-    
+
+    /*
     listOf(
         iosX64(),
         iosArm64(),
@@ -26,6 +28,7 @@ kotlin {
             isStatic = true
         }
     }
+     */
 
     sourceSets {
         commonMain.dependencies {
@@ -46,5 +49,16 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+group = "es.elhaso.knimpath"
+version = "0.1.1"
+
+publishing {
+    repositories {
+        maven {
+
+        }
     }
 }
