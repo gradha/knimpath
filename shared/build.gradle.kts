@@ -17,6 +17,9 @@ kotlin {
         }
     }
 
+    macosX64()
+    macosArm64()
+
     /*
     listOf(
         iosX64(),
@@ -36,6 +39,10 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        macosMain.dependencies {
+            // Add native dependencies here. Example:
+            // api(platform("org.jetbrains.kotlinx:kotlinx-coroutines-core-macosx:1.6.4"))
         }
     }
 }
