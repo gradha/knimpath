@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.dokka)
     id("maven-publish")
 }
 
@@ -60,7 +61,7 @@ android {
 }
 
 group = "es.elhaso.knimpath"
-version = "0.1.1"
+version = "0.1.2"
 
 publishing {
     repositories {
@@ -68,4 +69,11 @@ publishing {
 
         }
     }
+}
+
+// https://kotlinlang.org/docs/dokka-gradle.html#build-javadoc-jar
+tasks.register<Jar>("dokkaHtmlJar") {
+    dependsOn(tasks.dokkaHtml)
+    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
+    archiveClassifier.set("html-docs")
 }

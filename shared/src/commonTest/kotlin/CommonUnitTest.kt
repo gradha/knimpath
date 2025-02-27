@@ -1,10 +1,12 @@
 import es.elhaso.knimpath.div
+import es.elhaso.knimpath.internal.splitFile
 import es.elhaso.knimpath.splitFile
-import knim.std.internal.splitFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-private inline fun scope(block: () -> Unit) { block() }
+private inline fun scope(block: () -> Unit) {
+    block()
+}
 
 class FooTest {
     @Test

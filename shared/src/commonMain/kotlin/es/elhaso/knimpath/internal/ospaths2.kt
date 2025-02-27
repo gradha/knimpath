@@ -1,8 +1,4 @@
-package knim.std.internal
-
-import knim.std.private.DirSepAltSep
-import knim.std.private.ExtSep
-import knim.std.private.doslikeFileSystem
+package es.elhaso.knimpath.internal
 
 data class PathResultIntern(
     val dir: String,
@@ -19,6 +15,8 @@ data class PathResultIntern(
  * If `path` has no extension, `ext` is the empty string.
  * If `path` has no directory component, `dir` is the empty string.
  * If `path` has no filename component, `name` and `ext` are empty strings.
+ *
+ * @return [PathResultIntern]
  *
  * See also:
  * * `searchExtPos proc`_

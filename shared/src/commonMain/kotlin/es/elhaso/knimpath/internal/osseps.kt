@@ -1,4 +1,4 @@
-package knim.std.private
+package es.elhaso.knimpath.internal
 
 
 const val doslikeFileSystem = false
@@ -22,18 +22,22 @@ const val ParDir = ".."
 /**
  * The character used by the operating system to separate pathname
  * components, for example: `'/'` for POSIX, `':'` for the classic
- * Macintosh, and `'\\'` on Windows.
+ * Macintosh, and `'\\'` on Windows.A
+ *
+ * See also [AltSep].
  */
 val DirSep = if (doslikeFileSystem) '\\' else '/'
 
 /**
  * An alternative character used by the operating system to separate
- * pathname components, or the same as DirSep_ if only one separator
+ * pathname components, or the same as [DirSep] if only one separator
  * character exists. This is set to `'/'` on Windows systems
  * where DirSep_ is a backslash (`'\\'`).
  */
 val AltSep = if (doslikeFileSystem) '/' else DirSep
 
+/** Convenience combination of [DirSep] and [AltSep] as a set.
+ */
 val DirSepAltSep = setOf(DirSep, AltSep)
 
 /**
