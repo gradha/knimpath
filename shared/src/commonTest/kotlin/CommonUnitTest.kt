@@ -1,5 +1,8 @@
 import es.elhaso.knimpath.div
+import es.elhaso.knimpath.internal.defined_posix
 import es.elhaso.knimpath.internal.splitFile
+import es.elhaso.knimpath.joinPath
+import es.elhaso.knimpath.normalizePathEnd
 import es.elhaso.knimpath.splitFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -10,7 +13,7 @@ private inline fun scope(block: () -> Unit) {
 
 class FooTest {
     @Test
-    fun commonTest() {
+    fun splitFileTests() {
         val p = "Foo" / "bar" / "baz.txt"
         println("Path '$p'")
         assertEquals(p.value, "Foo/bar/baz.txt")
@@ -45,5 +48,30 @@ class FooTest {
             assertEquals(".txt", ext)
             println("Checked $dir $name $ext")
         }
+    }
+
+    @Test
+    fun joinPathTests() {
+        assertEquals(defined_posix, true)
+        assertEquals(joinPath("usr", "lib"), "usr/lib")
+        assertEquals(joinPath("usr", "lib/"), "usr/lib/")
+        assertEquals(joinPath("usr", ""), "usr")
+        assertEquals(joinPath("usr/", ""), "usr/")
+        assertEquals(joinPath("", ""), "")
+        assertEquals(joinPath("", "lib"), "lib")
+        assertEquals(joinPath("", "/lib"), "/lib")
+        assertEquals(joinPath("usr/", "/lib"), "usr/lib")
+        assertEquals(joinPath("usr/lib", "../bin"), "usr/bin")
+    }
+
+    @Test
+    fun normalizePathEndTests() {
+        assertEquals(defined_posix, true)
+        assertEquals(normalizePathEnd("/lib//.//", trailingSep = true), "/lib/")
+        assertEquals(normalizePathEnd("lib/./.", trailingSep = false), "lib")
+        assertEquals(normalizePathEnd(".//./.", trailingSep = false), ".")
+        assertEquals(normalizePathEnd("", trailingSep = true), "" ) // not / !
+        assertEquals(normalizePathEnd("/", trailingSep = false), "/" ) // not "" !
+
     }
 }
