@@ -2,17 +2,23 @@ package es.elhaso.knimpath
 
 import es.elhaso.knimpath.internal.DirSep
 import es.elhaso.knimpath.internal.DirSepAltSep
+import es.elhaso.knimpath.internal.JoinPathState
+import es.elhaso.knimpath.internal.addNormalizePath
 import kotlin.jvm.JvmInline
 
 @JvmInline
 value class Path(val value: String) {
 
     operator fun div(x: String): Path {
-        return Path("$value/$x")
+        return Path(joinPath(value, x))
     }
 
     operator fun div(x: Path): Path {
-        return Path("$value/${x.value}")
+        return Path(joinPath(value, x.value))
+    }
+
+    operator fun plus(x: String): Path {
+        return Path(value + x)
     }
 }
 
@@ -66,6 +72,18 @@ fun normalizePathEnd(string: String, trailingSep: Boolean = true): String {
     return result.toString()
 }
 
+private inline fun CharSequence.endsWith(charset: Set<Char>): Boolean {
+    return isNotEmpty() && this[length - 1] in charset
+}
+
+private fun joinPathImpl(state: JoinPathState, tail: String) {
+    val trailingSep = tail.endsWith(DirSepAltSep) ||
+            (tail.isEmpty() && state.result.endsWith(DirSepAltSep))
+    normalizePathEnd(state.result, trailingSep = false)
+    addNormalizePath(tail, state, DirSep)
+    normalizePathEnd(state.result, trailingSep = trailingSep)
+}
+
 /** Joins two directory names into a path.
  *
  * @return Normalized path concatenation of `head` and `tail`,
@@ -80,27 +98,16 @@ fun normalizePathEnd(string: String, trailingSep: Boolean = true): String {
  * * `uri./ proc <uri.html#/,Uri,string>`_
  */
 fun joinPath(head: String, tail: String): String {
+    val state = JoinPathState(head, tail)
+    joinPathImpl(state, head)
+    joinPathImpl(state, tail)
+    return state.result.toString()
+}
 
-    return ""
-    /*
-result = newStringOfCap(head.len + tail.len)
-var state = 0
-joinPathImpl(result, state, head)
-joinPathImpl(result, state, tail)
-when false:
-if len(head) == 0:
-result = tail
-elif head[len(head)-1] in { DirSep, AltSep }:
-if tail.len > 0 and tail[0] in { DirSep, AltSep }:
-result = head & substr(tail, 1)
-else:
-result = head & tail
-else:
-if tail.len > 0 and tail[0] in { DirSep, AltSep }:
-result = head & tail
-else:
-result = head & DirSep & tail
-     */
+/** See [joinPath].
+ */
+fun joinPath(head: Path, tail: String): Path {
+    return Path(joinPath(head.value, tail))
 }
 
 /** Splits a path into `(dir, name, extension)` components.

@@ -6,6 +6,18 @@ data class PathResultIntern(
     val ext: String,
 )
 
+data class JoinPathState(
+    val result: StringBuilder,
+    var state: Int,
+) {
+    constructor(head: String, tail: String): this(
+        result = StringBuilder(head.length + tail.length),
+        state = 0
+    )
+
+    constructor(): this(result = StringBuilder(), state = 0)
+}
+
 /**
  * Splits a filename into `(dir, name, extension)` tuple.
  *
@@ -43,7 +55,7 @@ fun splitFile(path: String): PathResultIntern {
                 resultName = path.subSequence(namePos, dotPos)
                 resultExt = path.subSequence(dotPos, path.length)
             } else {
-                resultName = path.subSequence(namePos, path.length )
+                resultName = path.subSequence(namePos, path.length)
             }
             break
         } else if (path[i] == ExtSep && i > 0 && i < path.length - 1 &&

@@ -1,8 +1,6 @@
 package es.elhaso.knimpath.internal
 
 
-const val doslikeFileSystem = false
-
 /**
  * The constant character used by the operating system to refer to the
  * current directory.

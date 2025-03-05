@@ -1,5 +1,7 @@
+import es.elhaso.knimpath.Path
 import es.elhaso.knimpath.div
 import es.elhaso.knimpath.internal.defined_posix
+import es.elhaso.knimpath.internal.normalizePath
 import es.elhaso.knimpath.internal.splitFile
 import es.elhaso.knimpath.joinPath
 import es.elhaso.knimpath.normalizePathEnd
@@ -15,38 +17,32 @@ class FooTest {
     @Test
     fun splitFileTests() {
         val p = "Foo" / "bar" / "baz.txt"
-        println("Path '$p'")
         assertEquals(p.value, "Foo/bar/baz.txt")
         val result = splitFile(p)
-        println("splitFile '$p' -> $result")
 
         scope {
             val (dir, name, ext) = splitFile("usr/local/nimc.html")
             assertEquals("usr/local", dir)
             assertEquals("nimc", name)
             assertEquals(".html", ext)
-            println("Checked $dir $name $ext")
         }
         scope {
             val (dir, name, ext) = splitFile("/usr/local/os")
             assertEquals("/usr/local", dir)
             assertEquals("os", name)
             assertEquals("", ext)
-            println("Checked $dir $name $ext")
         }
         scope {
             val (dir, name, ext) = splitFile("/usr/local/")
             assertEquals("/usr/local", dir)
             assertEquals("", name)
             assertEquals("", ext)
-            println("Checked $dir $name $ext")
         }
         scope {
             val (dir, name, ext) = splitFile("/tmp.txt")
             assertEquals("/", dir)
             assertEquals("tmp", name)
             assertEquals(".txt", ext)
-            println("Checked $dir $name $ext")
         }
     }
 
@@ -70,8 +66,22 @@ class FooTest {
         assertEquals(normalizePathEnd("/lib//.//", trailingSep = true), "/lib/")
         assertEquals(normalizePathEnd("lib/./.", trailingSep = false), "lib")
         assertEquals(normalizePathEnd(".//./.", trailingSep = false), ".")
-        assertEquals(normalizePathEnd("", trailingSep = true), "" ) // not / !
-        assertEquals(normalizePathEnd("/", trailingSep = false), "/" ) // not "" !
+        assertEquals(normalizePathEnd("", trailingSep = true), "") // not / !
+        assertEquals(normalizePathEnd("/", trailingSep = false), "/") // not "" !
 
+    }
+
+    @Test
+    fun normalizePathTests() {
+        assertEquals("foo/baz", normalizePath("./foo//bar/../baz"))
+    }
+
+    @Test
+    fun genericUsage() {
+        val path = Path("foo") / "bar" / "test.txt"
+        val (dir, name, ext) = splitFile(path)
+        println("Got '${dir.value}' / '$name' + '$ext'")
+        assertEquals(Path("foo/bar/test.txt"), dir / name + ext)
+        assertEquals(Path("foo/bar/test"), dir / name)
     }
 }
