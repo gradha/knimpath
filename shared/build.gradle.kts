@@ -20,6 +20,7 @@ kotlin {
 
     macosX64()
     macosArm64()
+    mingwX64()
 
     /*
     listOf(

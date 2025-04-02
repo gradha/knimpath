@@ -1,4 +1,4 @@
-# Version number (tags')
+# Version number (tags)
 
 Modify `shared/build.gradle.kts`.
 

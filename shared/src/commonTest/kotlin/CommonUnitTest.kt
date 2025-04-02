@@ -1,5 +1,7 @@
 import es.elhaso.knimpath.Path
+import es.elhaso.knimpath.Platform
 import es.elhaso.knimpath.div
+import es.elhaso.knimpath.getPlatform
 import es.elhaso.knimpath.internal.defined_posix
 import es.elhaso.knimpath.internal.normalizePath
 import es.elhaso.knimpath.internal.splitFile
@@ -14,6 +16,13 @@ private inline fun scope(block: () -> Unit) {
 }
 
 class FooTest {
+
+    @Test
+    fun identityTest() {
+        val platform = getPlatform()
+        val name = platform.name
+        println("Showing platform name '$name'")
+    }
     @Test
     fun splitFileTests() {
         val p = "Foo" / "bar" / "baz.txt"
