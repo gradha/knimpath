@@ -1,4 +1,7 @@
+import com.android.build.gradle.tasks.BundleAar
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.apache.tools.ant.taskdefs.condition.Os
+import kotlin.jvm.java
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -78,3 +81,57 @@ tasks.register<Jar>("dokkaHtmlJar") {
     from(tasks.dokkaHtml.flatMap { it.outputDirectory })
     archiveClassifier.set("html-docs")
 }
+
+val exclusions = listOf(".git", "build", ".gradle", "gradle")
+
+// Function to define the archive base name
+fun archiveBaseName(): String {
+    val projectName = project.name.replace(Regex("[^a-zA-Z0-9]"), "-")
+    return "knimpath-${project.version}"
+}
+
+// Common configuration for archive tasks
+fun configureArchiveTask(task: org.gradle.api.tasks.bundling.AbstractArchiveTask) {
+    task.apply {
+        archiveBaseName.set(archiveBaseName())
+        destinationDirectory.set(file("${project.buildDir}/distributions"))
+        // Filter out unwanted files
+        duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.EXCLUDE
+        from(project.projectDir) {
+            exclude(exclusions)
+        }
+    }
+}
+
+// Task to create a ZIP archive
+tasks.register<Zip>("createSrcZipArchive") {
+    configureArchiveTask(this)
+}
+
+// Task to create a ZIP archive of AAR files
+tasks.register<Zip>("createLibZipArchive") {
+    configureArchiveTask(this)
+    // Use the project's outputs.
+    from(tasks.named("linkMacosArm64").map { it.outputs.files }) {
+        include("**/*.jar")
+        include("**/*.klib")
+        include("**/*.module")
+        include("**/*.pom")
+        include("**/*kotlin-tooling-metadata.json")
+    }
+}
+
+
+// Task to create a tar.gz archive
+tasks.register<Tar>("createTarGzArchive") {
+    configureArchiveTask(this)
+    compression = org.gradle.api.tasks.bundling.Compression.GZIP
+}
+
+// Ensure tasks are run in the proper order if other tasks might conflict with them
+tasks.named("createSrcZipArchive") {
+    mustRunAfter("createTarGzArchive")
+}
+//tasks.named("createTarGzArchive") {
+//mustRunAfter("createSrcZipArchive")
+//}
