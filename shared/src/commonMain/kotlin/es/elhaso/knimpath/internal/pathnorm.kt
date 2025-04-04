@@ -48,7 +48,21 @@ internal fun String.isSlash(bounds: IntTuple): Boolean =
 
 fun addNormalizePath(x: String, state: JoinPathState, dirSep: Char = DirSep) {
 
-    if (doslikeFileSystem) TODO("Test on DOS/Windows systems")
+    val x = if (doslikeFileSystem) { // Add Windows drive at start without normalization
+        val (drive, file) = splitDrive(x)
+
+        state.result.append(drive)
+        state.result.map { c ->
+            if (c in DirSepAltSep)
+                dirSep
+            else
+                c
+        }
+
+        file
+    } else {
+        x
+    }
 
     // state: 0th bit set if isAbsolute path. Other bits count
     // the number of path components.

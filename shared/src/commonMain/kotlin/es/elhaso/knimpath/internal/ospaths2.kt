@@ -10,12 +10,12 @@ data class JoinPathState(
     val result: StringBuilder,
     var state: Int,
 ) {
-    constructor(head: String, tail: String): this(
+    constructor(head: String, tail: String) : this(
         result = StringBuilder(head.length + tail.length),
         state = 0
     )
 
-    constructor(): this(result = StringBuilder(), state = 0)
+    constructor() : this(result = StringBuilder(), state = 0)
 }
 
 /**
@@ -40,10 +40,15 @@ data class JoinPathState(
 fun splitFile(path: String): PathResultIntern {
     var namePos = 0
     var dotPos = 0
-    val stop = if (doslikeFileSystem) 0 else 0
     var resultDir: CharSequence = ""
     var resultName: CharSequence = ""
     var resultExt: CharSequence = ""
+
+    val stop = if (doslikeFileSystem) {
+        val drive = splitDrive(path).drive
+        resultDir = drive
+        drive.length
+    } else 0
 
     for (i in (path.length - 1) downTo stop) {
         if (path[i] in DirSepAltSep || i == 0) {
