@@ -50,6 +50,7 @@ kotlin {
             // api(platform("org.jetbrains.kotlinx:kotlinx-coroutines-core-macosx:1.6.4"))
         }
     }
+    withSourcesJar()
 }
 
 android {
@@ -70,7 +71,9 @@ version = "0.1.3"
 publishing {
     repositories {
         maven {
-
+            // https://stackoverflow.com/a/71176846/172690
+            name = "localDist-knimpath"
+            url = uri(layout.buildDirectory.dir("localDist"))
         }
     }
 }
@@ -110,9 +113,10 @@ tasks.register<Zip>("createSrcZipArchive") {
 
 // Task to create a ZIP archive of AAR files
 tasks.register<Zip>("createLibZipArchive") {
+    //dependsOn("publishAllPublicationsToLocalDist")
     configureArchiveTask(this)
     // Use the project's outputs.
-    from(tasks.named("linkMacosArm64").map { it.outputs.files }) {
+    from(layout.buildDirectory.dir("localDist")) {
         include("**/*.jar")
         include("**/*.klib")
         include("**/*.module")
