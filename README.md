@@ -14,7 +14,7 @@ Modify `shared/build.gradle.kts`.
 
 # Local publish
 
-    ./gradlew  publishToMavenLocal
+    ./gradlew  publishToMavenLocal --no-configuration-cache
 
 # Docs
 

@@ -7,7 +7,7 @@ import kotlin.jvm.java
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    //alias(libs.plugins.dokka)
+    alias(libs.plugins.dokka)
     alias(libs.plugins.vannipublish)
     id("maven-publish")
 }
@@ -80,6 +80,7 @@ publishing {
     }
 }
 
+// https://github.com/Kotlin/multiplatform-library-template
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
@@ -115,13 +116,11 @@ mavenPublishing {
 }
 
 // https://kotlinlang.org/docs/dokka-gradle.html#build-javadoc-jar
-/*
 tasks.register<Jar>("dokkaHtmlJar") {
     dependsOn(tasks.dokkaHtml)
     from(tasks.dokkaHtml.flatMap { it.outputDirectory })
     archiveClassifier.set("html-docs")
 }
- */
 
 val exclusions = listOf(".git", "build", ".gradle", "gradle")
 
