@@ -1,4 +1,5 @@
 import com.android.build.gradle.tasks.BundleAar
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.apache.tools.ant.taskdefs.condition.Os
 import kotlin.jvm.java
@@ -6,7 +7,8 @@ import kotlin.jvm.java
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.dokka)
+    //alias(libs.plugins.dokka)
+    alias(libs.plugins.vannipublish)
     id("maven-publish")
 }
 
@@ -78,12 +80,48 @@ publishing {
     }
 }
 
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    signAllPublications()
+
+    coordinates(group.toString(), "knimpath", version.toString())
+
+    pom {
+        name = "Kotlin version of Nim paths procs"
+        description = "Small port of some functions found in Nim's paths module ported to KMP."
+        inceptionYear = "2025"
+        url = "https://github.com/gradha/knimpath"
+        licenses {
+            license {
+                name = "The MIT License"
+                url = "https://opensource.org/license/mit"
+                distribution = "https://opensource.org/license/mit"
+            }
+        }
+        developers {
+            developer {
+                id = "gradha"
+                name = "Grzegorz Adam Hankiewicz"
+                url = "https://github.com/gradha"
+            }
+        }
+        scm {
+            url = "https://github.com/gradha/knimpath"
+            connection = "scm:git:git://github.com/gradha/knimpath.git"
+            developerConnection = "scm:git:ssh://git@github.com/gradha/knimpath.git"
+        }
+    }
+}
+
 // https://kotlinlang.org/docs/dokka-gradle.html#build-javadoc-jar
+/*
 tasks.register<Jar>("dokkaHtmlJar") {
     dependsOn(tasks.dokkaHtml)
     from(tasks.dokkaHtml.flatMap { it.outputDirectory })
     archiveClassifier.set("html-docs")
 }
+ */
 
 val exclusions = listOf(".git", "build", ".gradle", "gradle")
 
