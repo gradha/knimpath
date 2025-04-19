@@ -1,4 +1,3 @@
-import com.android.build.gradle.tasks.BundleAar
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -6,13 +5,14 @@ import kotlin.jvm.java
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    //alias(libs.plugins.androidLibrary)
     alias(libs.plugins.dokka)
     alias(libs.plugins.vannipublish)
     id("maven-publish")
 }
 
 kotlin {
+    /*
     androidTarget {
         compilations.all {
             compileTaskProvider.configure {
@@ -22,6 +22,7 @@ kotlin {
             }
         }
     }
+     */
 
     macosX64()
     macosArm64()
@@ -55,6 +56,7 @@ kotlin {
     withSourcesJar()
 }
 
+/*
 android {
     namespace = "es.elhaso.knimpath"
     compileSdk = 34
@@ -66,6 +68,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
+ */
 
 group = "es.elhaso.knimpath"
 version = "0.1.3"
