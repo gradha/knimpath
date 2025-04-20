@@ -8,6 +8,7 @@ local.properties
 
 /captures
 /dist
+/docs/*.html
 /extra
 /nim
 /studio.vmoptions
