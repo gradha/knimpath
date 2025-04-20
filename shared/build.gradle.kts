@@ -6,7 +6,6 @@ import kotlin.jvm.java
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     //alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.dokka)
     alias(libs.plugins.vannipublish)
     id("maven-publish")
 }
@@ -118,12 +117,31 @@ mavenPublishing {
     }
 }
 
-// https://kotlinlang.org/docs/dokka-gradle.html#build-javadoc-jar
-tasks.register<Jar>("dokkaHtmlJar") {
-    dependsOn(tasks.dokkaHtml)
-    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
-    archiveClassifier.set("html-docs")
+// build.gradle.kts
+
+dokka {
+    moduleName.set("knimpath")
+    dokkaPublications.html {
+        suppressInheritedMembers.set(true)
+        failOnWarning.set(true)
+    }
+    dokkaSourceSets.commonMain {
+        //includes.from("README.md")
+        /*
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl("https://example.com/src")
+            remoteLineSuffix.set("#L")
+        }
+         */
+    }
+    pluginsConfiguration.html {
+        customStyleSheets.from("styles.css")
+        customAssets.from("logo.png")
+        //footerMessage.set("(c) Electric Hands Software")
+    }
 }
+
 
 val exclusions = listOf(".git", "build", ".gradle", "gradle")
 

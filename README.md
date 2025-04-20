@@ -18,6 +18,6 @@ Modify `shared/build.gradle.kts`.
 
 # Docs
 
-    ./gradlew dokkaHtml && open shared/build/dokka/html/index.html
+    ./gradlew :dokkaGenerate && open build/dokka/html/index.html
 
 Use task dokkaHtmlJar to generate a jar for maven distribution.

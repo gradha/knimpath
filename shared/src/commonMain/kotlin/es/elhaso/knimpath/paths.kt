@@ -6,7 +6,7 @@ import es.elhaso.knimpath.internal.JoinPathState
 import es.elhaso.knimpath.internal.addNormalizePath
 import kotlin.jvm.JvmInline
 
-@JvmInline
+//@JvmInline
 value class Path(val value: String) {
 
     operator fun div(x: String): Path {
