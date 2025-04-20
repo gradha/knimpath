@@ -12,10 +12,6 @@ this *ported* version is [also licensed under the MIT license](LICENSE.md).
 
     ./gradlew  publishToMavenLocal
 
-# Maven publish
-
-    ./gradlew publishAndReleaseToMavenCentral
-
 # Docs
 
     ./gradlew :dokkaGenerate && open build/dokka/html/index.html
