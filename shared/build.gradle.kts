@@ -86,7 +86,9 @@ publishing {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-    signAllPublications()
+    val isRelease = if (extra.has("isRelease")) extra.get("isRelease") as? String else null
+    if (isRelease == "true")
+        signAllPublications()
 
     coordinates(group.toString(), "knimpath", version.toString())
 
@@ -136,8 +138,8 @@ dokka {
          */
     }
     pluginsConfiguration.html {
-        customStyleSheets.from("styles.css")
-        customAssets.from("logo.png")
+        //customStyleSheets.from("styles.css")
+        //customAssets.from("logo.png")
         //footerMessage.set("(c) Electric Hands Software")
     }
 }

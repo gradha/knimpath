@@ -10,7 +10,11 @@ this *ported* version is [also licensed under the MIT license](LICENSE.md).
 
 # Local publish
 
-    ./gradlew  publishToMavenLocal --no-configuration-cache
+    ./gradlew  publishToMavenLocal
+
+# Maven publish
+
+    ./gradlew publishAndReleaseToMavenCentral
 
 # Docs
 
