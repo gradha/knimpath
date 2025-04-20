@@ -8,10 +8,6 @@ license](https://github.com/nim-lang/Nim/blob/3dda60a8ce32cb7d5e3e99111399a1550c
 this *ported* version is [also licensed under the MIT license](LICENSE.md).
 
 
-# Version number (tags)
-
-Modify `shared/build.gradle.kts`.
-
 # Local publish
 
     ./gradlew  publishToMavenLocal --no-configuration-cache

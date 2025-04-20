@@ -70,7 +70,7 @@ android {
  */
 
 group = "es.elhaso.knimpath"
-version = "0.1.3"
+version = "0.1.4"
 
 publishing {
     repositories {
